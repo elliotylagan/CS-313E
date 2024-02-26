@@ -8,29 +8,32 @@
 # Output: A sorted and merged list of interval tuples, where
 #         no interval in the merged list has any overlap.
 def merge_tuples (tuples_list):
+    answer = tuples_list[:]
 
     #Insertion sort by lower bound
-    for i in range(len(tuples_list)):
+    for i in range(len(answer)):
         j = i
-        while j > 0 and tuples_list[j][0] < tuples_list[j-1][0]:
-            tuples_list[j], tuples_list[j-1] = tuples_list[j-1], tuples_list[j]
+        while j > 0 and answer[j][0] < answer[j-1][0]:
+            answer[j], answer[j-1] = answer[j-1], answer[j]
             j -= 1
 
     #merge
     i = 0
-    while i < len(tuples_list)-1:
+    while i < len(answer)-1:
         #checks if mergable
-        if tuples_list[i][1] >= tuples_list[i+1][0]:
-            tuples_list[i] = list(tuples_list[i])
+        if answer[i][1] >= answer[i+1][0]:
+            answer[i] = list(answer[i])
 
             #merges by complete overlap or partial overlap
-            if tuples_list[i][1] < tuples_list[i+1][1]:
-                tuples_list[i][1] = tuples_list[i+1][1]
+            if answer[i][1] < answer[i+1][1]:
+                answer[i][1] = answer[i+1][1]
             
-            tuples_list[i] = tuple(tuples_list[i])
-            tuples_list.pop(i+1)
+            answer[i] = tuple(answer[i])
+            answer.pop(i+1)
+            i -= 1
         i += 1
-    return tuples_list #THE BUG It's the right list but the main method doesn't print it out right#
+
+    return answer #THE BUG It's the right list but the main method doesn't print it out right#
 
 
 # Input: tuples_list is a list of tuples of denoting intervals
@@ -44,6 +47,7 @@ def sort_by_interval_size (tuples_list):
             tuples_list[j], tuples_list[j-1] = tuples_list[j-1], tuples_list[j]
             j -= 1
     return tuples_list
+
 
 def length(tuple):
     return tuple[1]-tuple[0]
