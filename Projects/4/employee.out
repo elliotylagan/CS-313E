@@ -1,0 +1,27 @@
+Employee
+Chris,UT1,None 
+
+PermanentEmployee
+Emma,UT2,100000,['health_insurance'] 
+
+TemporaryEmployee
+Sam,UT3,100,40 
+
+Consultant
+John,UT4,100,40,10 
+
+Manager
+Charlotte,UT5,1000000,100000 
+
+ConsultantManager
+Matt,UT6,1000,40,4,ConsultantManager
+Matt,UT6,1000,10000 
+
+Check Salaries
+Emma's Salary is: 90000.0
+Emma's Salary is: 90000.0
+Emma's Salary is: 70000.0
+Sam's Salary is: 4000.0
+John's Salary is: 14000.0
+Charlotte's Salary is: 1100000.0
+Matt's Salary is: 54000.0

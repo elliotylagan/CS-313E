@@ -1,0 +1,42 @@
+=====> Case # 1
+Binary Search:
+Ideal lines of code before coffee: 152
+sum_series called 13 times
+Elapsed Time: 0.00006533 seconds
+
+Linear Search:
+Ideal lines of code before coffee: 152
+sum_series called 152 times
+Elapsed Time: 0.00051308 seconds
+
+Binary Search was 7.9 times faster.
+
+
+=====> Case # 2
+Binary Search:
+Ideal lines of code before coffee: 54
+sum_series called 7 times
+Elapsed Time: 0.00001144 seconds
+
+Linear Search:
+Ideal lines of code before coffee: 54
+sum_series called 54 times
+Elapsed Time: 0.00005555 seconds
+
+Binary Search was 4.9 times faster.
+
+
+=====> Case # 3
+Binary Search:
+Ideal lines of code before coffee: 6401
+sum_series called 18 times
+Elapsed Time: 0.00006938 seconds
+
+Linear Search:
+Ideal lines of code before coffee: 6401
+sum_series called 6401 times
+Elapsed Time: 0.01566839 seconds
+
+Binary Search was 225.8 times faster.
+
+
