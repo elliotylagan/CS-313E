@@ -34,22 +34,15 @@ def printRandom():
 #             return False
 #     return True
 
-def merge_sort(nums):
-    if len(nums) <= 1:
-        return nums
-    
-    pivot  =  nums[len(nums)//2]
-    left   = [number for number in nums if number <  pivot]
-    right  = [number for number in nums if number >  pivot]
-    middle = [number for number in nums if number == pivot]
-    #thank you Ryan
-   
-
-    left = merge_sort(left)
-    right = merge_sort(right)
-    
-
-    return left + middle + right
-
-
-print(merge_sort([5,4,3,2,1]))
+nums = [2,7,11,15]
+target = 26
+def funzies(nums, target):
+    hasher = {}
+    for i in range(len(nums)):
+        if target - nums[i] in hasher.keys():
+            return [i, hasher[target - nums[i]]]
+        else:
+            hasher[nums[i]] = i
+            print(hasher)
+            
+print (funzies(nums, target))
