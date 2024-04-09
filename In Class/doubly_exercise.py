@@ -29,12 +29,32 @@ class DoublyLinkedList:
         return self.head is None
 
     def add(self, item):
-        pass
+        temp = Node(item)
+        if self.is_empty():
+            self.head = temp
+            self.tail = temp
+        else:
+            temp.next = self.head
+            self.head.prev = temp
+            self.head = temp
+        self.size += 1
 
     def append(self, item):
-        pass
+        temp = Node(item)
+        if self.is_empty():
+            self.tail = temp
+            self.head = temp
+        else:
+            temp.prev = self.tail
+            self.tail.next = temp
+            self.tail = temp
+        self.size += 1
+
 
     def insert(self, pos, item):
+        '''
+        inserts
+        '''
         if pos > self.size:
             raise IndexError("Index out of bounds")
 

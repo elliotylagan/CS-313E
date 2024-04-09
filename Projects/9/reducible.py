@@ -28,6 +28,7 @@ def next_prime(n): #my own function
     Input: takes as input a positive integer n
     Output: the smallest prime number greater than the input
     '''
+    n = int(n)
     while not is_prime(n):
         n += 1
     return n
@@ -75,6 +76,7 @@ def insert_word(s, hash_table):
     while True:
         if hash_table[index] is not None:
             hash_table[index] = s
+            return
 
         index = (index + step_size(s, const)) % len(hash_table)
 
@@ -95,19 +97,39 @@ def find_word(s, hash_table):
     return False
 
 
-def is_reducible(s, hash_table, hash_memo): #no clue what to do with hash table...use insert_word()?
+def is_reducible(s, hash_table, hash_memo): #no clue what to do with hash table???
     '''
     # Input: string s, a hash table, and a hash_memo 
     #        recursively finds if the string is reducible
     # Output: if the string is reducible it enters it into the hash memo 
     #         and returns True and False otherwise
+
+    # for each word in the word_list recursively determine
+    # if it is reducible, if it is, add it to reducible_words
+    # as you recursively remove one letter at a time check
+    # first if the sub-word exists in the hash_memo. if it does
+    # then the word is reducible and you do not have to test
+    # any further. add the word to the hash_memo.
     '''
-    if s in hash_memo: #put a, i, and o in the hash_memo in main()
-        hash_memo.append(s) #change this to hash format, not list format...use insert_word()?
+    print("1", s)
+
+    if find_word(s, hash_memo): #put a, i, and o in the hash_memo in main()
         return True
-    for index in len(s):
-        is_reducible(s[:index] + s[index:], hash_table, hash_memo) # I think this is causing an infinite loop :(
+    if len(s) == 0:
+        return False
+    
+    print ("2", s)
+    temp = []
+
+    
+    for index in range(len(s)):
+        if is_reducible(s[:index] + s[index+1:], hash_table, hash_memo): 
+            insert_word(s, hash_memo)
+            return True # I think this is causing an infinite loop :(
+            
     return False
+
+def helper (s, temp, hash_memo)
 
 
 def get_longest_words(string_list):
@@ -148,39 +170,41 @@ def main():
     # populate the hash_list with N blank strings
     for i in range(N):
         hash_table[i] = ""
+
     # hash each word in word_list into hash_list
-    # for collisions use double hashing 
+    # for collisions use double hashing
     for word in word_list:
         insert_word(word, hash_table)
     # create an empty hash_memo of size M
     # we do not know a priori how many words will be reducible
     # let us assume it is 10 percent (fairly safe) of the words
-    # then M is a prime number that is slightly greater than 
+    # then M is a prime number that is slightly greater than
     # 0.2 * size of word_list
     M = next_prime(0.2 * size)
     hash_memo = {}
     # populate the hash_memo with M blank strings
-    for i in range(M):
+    for i in range(int(M)):
         hash_memo[i] = ""
     insert_word("a", hash_memo)
     insert_word("i", hash_memo)
     insert_word("o", hash_memo)
+
+    '''testing'''
     # create an empty list reducible_words
+    #print (hash_table) #N is 227626
+    #print (hash_memo)  #M is 22760
+    #                   #size is 113809
+    print (size, N, M)
+
     reducible_words = []
-    # for each word in the word_list recursively determine
-    # if it is reducible, if it is, add it to reducible_words
-    # as you recursively remove one letter at a time check
-    # first if the sub-word exists in the hash_memo. if it does
-    # then the word is reducible and you do not have to test
-    # any further. add the word to the hash_memo.
     for word in word_list:
         if is_reducible(word, hash_table, hash_memo):
             reducible_words.append(word)
     # find the largest reducible words in reducible_words
-    max = get_longest_words(reducible_words)
+    longest_reducible_words = get_longest_words(reducible_words)
     # print the reducible words in alphabetical order
     # one word per line
-    for word in max: #not sure if I need to sort to make alphabetical
+    for word in longest_reducible_words: #not sure if I need to sort to make alphabetical
         print(word)
 
 if __name__ == "__main__":

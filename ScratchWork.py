@@ -34,15 +34,3 @@ def printRandom():
 #             return False
 #     return True
 
-nums = [2,7,11,15]
-target = 26
-def funzies(nums, target):
-    hasher = {}
-    for i in range(len(nums)):
-        if target - nums[i] in hasher.keys():
-            return [i, hasher[target - nums[i]]]
-        else:
-            hasher[nums[i]] = i
-            print(hasher)
-            
-print (funzies(nums, target))
