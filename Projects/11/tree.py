@@ -4,8 +4,11 @@
 # Name 2: Elliot Ylagan
 # EID 2: EPY82
 
+'''Implements binary tree node and tree classes'''
+
 import sys
 from collections import deque
+
 
 class Stack:
     """Stack implementation as a list"""
@@ -34,6 +37,7 @@ class Stack:
         """Check if the stack is empty"""
         return not self.__s
 
+
 class Queue:
     """Queue implementation as a deque"""
 
@@ -60,6 +64,7 @@ class Queue:
     def is_empty(self):
         """Check if the queue is empty"""
         return not self.__q
+
 
 class Node:
     """Node class for representing a node in a binary search tree."""
@@ -139,121 +144,158 @@ class Tree:
             else:
                 parent.right = new_node
 
-    # Return True if both trees are similar. False otherwise.
-    # tree is also a Tree type
     def is_similar(self, tree):
-        realRoot = self.root
-        fakeRoot = tree.root
+        '''Return True if both trees are similar. False otherwise.
+        tree is also a Tree type'''
+        real_root = self.root
+        fake_root = tree.root
+        if real_root is None and fake_root is None:
+            return True
+        if real_root is None or fake_root is None:
+            return False
+        return is_similar_helper(real_root, fake_root)
 
-        return is_similar_helper(realRoot, fakeRoot)
-    # Return a list of nodes at a given level from left to right.
-    def get_level(self, level):
+    def get_level(self, level): #needs work (test cases 1 & 3)
+        '''Return a list of nodes at a given level from left to right.'''
         result = []
         current = self.root
-
         get_level_helper(current, 0, level, result)
-
         return result
-    # Return the height of the tree
+
     def get_height(self):
-        return get_height_helper(self.root, 0)
-    # Return the number of nodes in the tree.
+        '''Return the height of the tree'''
+        return get_height_helper(self.root, -1)
+
     def num_nodes(self):
+        '''Return the number of nodes in the tree.'''
         if self.root is None:
             return 0
         return num_nodes_helper(self.root, 1)
-    # Returns the range of values stored in the tree.
-    def range(self):
+
+    def range(self): #needs work (all test cases)
+        '''Returns the range of values stored in the tree.'''
         if self.root is None:
             return 0
-        min = self.root.data
-        max = self.root.data
-        return range_helper(self.root, min, max)
+        max1 = get_max(self.root, self.root.data)
+        min1 = get_min(self.root, self.root.data)
 
-    # Returns the list of the node that you see from left side.
-    # The order of the output should be from top to down.
+        print("max", max1, "min", min1)
+        return max1 - min1
+
     def left_side_view(self):
+        '''Returns the list of the node that you see from left side.
+        The order of the output should be from top to down.'''
         result = []
-        
-        for i in range(self.get_height):
-            result.append(self.get_level(i)[0])       
+
+        for i in range(self.get_height() + 1):
+            result.append(self.get_level(i)[0])
 
         return result
 
-    # Returns the sum of the value of all leaves.
     def sum_leaf_nodes(self):
+        '''Returns the sum of the value of all leaves.'''
         if self.root is None:
             return 0
-        return sum_leaf_nodes_helper(self.root)
+
+        sum1 = 0
+        return sum_leaf_nodes_helper(self.root, sum1)
 
 
 def is_similar_helper(real, fake):
-        if real.data != fake.data:
-            return False
-        if real.data is None and fake.data is None:
-            return True
-        return is_similar_helper(real.left, fake.left) and is_similar_helper(real.right, fake.right)
+    '''helper for is_similar()'''
+    if real is None and real is None:
+        return True
+    if real is None or real is None:
+        return False
+    if real.data != fake.data:
+        return False
+    return is_similar_helper(real.left, fake.left) and is_similar_helper(real.right, fake.right)
 
-def get_level_helper(current, current_level, level, result):
-        if current_level > level:
-            return
-        if current.data is None:
-            return
-        if current_level == level:
-            result.append(current.data)
-        
-        get_level_helper(current.left, current_level + 1, level, result)
-        get_level_helper(current.right, current_level+1, level, result)
+
+def get_level_helper(current, current_level, level, result): #needs work (something about Node not having right or left children)
+    '''helper for get_level()'''
+    if current_level > level:
         return
+    if current is None:
+        return
+    if current_level == level:
+        result.append(current.data)
+
+    get_level_helper(current.left, current_level + 1, level, result)
+    get_level_helper(current.right, current_level + 1, level, result)
+    return
+
 
 def get_height_helper(current, height):
-    if current.data is None:
+    '''helper for get_height()'''
+    if current is None:
         return height
-    else:
-        height += 1
+    height += 1
     return max(get_height_helper(current.left, height), get_height_helper(current.right, height))
-    
-def num_nodes_helper(current, numNodes):
-    if current.data is None:
-        return
-    numNodes += 1
-    
-    num_nodes_helper(current.left, numNodes)
-    num_nodes_helper(current.right, numNodes)
-    return numNodes
 
-def range_helper(current, min, max):
-    if current.data is None:
-        return
-    if current.data > max:
-        max = current.data
-    if current.data < min:
-        min = current.data
 
-    range_helper(current.left, min, max)
-    range_helper(current.right, min, max)
+def num_nodes_helper(current, num_nodes):
+    '''helper for num_nodes()'''
+    if current is None:
+        return 0
+    return num_nodes_helper(current.left, num_nodes) + 1 + num_nodes_helper(current.right, num_nodes)
 
-    return max - min
 
-def sum_leaf_nodes_helper(current, sum): #fix this
-    if current.data is None:
-        return sum
+def get_min(current, min):
+    '''helper for range()'''
+    if current is None:
+        return min
+    return get_min(current.left, min)
+
+def get_max(current, max):
+    '''helper for range()'''
+    if current is None:
+        return max
+    return get_min(current.right, max)
+
+def sum_leaf_nodes_helper(current, sum1):  # fix this
+    '''helper for sum_leaf_nodes()'''
+    if current is None:
+        return sum1
     if is_leaf(current):
-        return sum + current.data
+        return sum1 + current.data
 
-    sum = sum_leaf_nodes_helper(current.left, sum)
-    sum = sum_leaf_nodes_helper(current.right, sum)
-    return sum
+    sum1 = sum_leaf_nodes_helper(current.left, sum1)
+    sum1 = sum_leaf_nodes_helper(current.right, sum1)
+
+    return sum1
+
 
 def is_leaf(current):
-    if current.left.data is not None:
+    '''tests if node is a leaf'''
+    if current.left is not None:
         return False
-    if current.right.data is not None:
+    if current.right is not None:
         return False
     return True
 
+
 def main():
-    """Main function. Feel free to write your own code here to test."""
-    
+    """Just some garbage so import sys doesn't give a formatting error"""
+
+    input()
+    input()
+    input()
+    input1 = input()
+    input1 = input1.strip()
+    input1 = input1.split(" ")
+
+    Tree1 = Tree()
+    for num in input1:
+        Tree1.insert(int(num))
+
+    print(Tree1.get_level(2))
+    print(Tree1.get_height())
+    print(Tree1.num_nodes())
+    print(Tree1.range())
+    print(Tree1.left_side_view())
+    print(Tree1.sum_leaf_nodes())
+
+
 if __name__ == "__main__":
     main()

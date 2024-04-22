@@ -15,22 +15,18 @@ def printRandom():
         }
     return (id, random.choice(quotes))
 '''
+def subsets(nums):
+    def helper(result, subset, i, nums):
+        if i == len(nums):
+            result.append(subset[:])
+            return
+        helper(result, subset, i + 1, nums)
+        subset.append(nums[i])
+        helper(result, subset, i + 1, nums)
+        subset.pop(len(subset) - 1)
+    result = []
+    subset = []
+    helper(result, subset, 0, nums)
+    return result
 
-# def merge_sort(nums):
-#     left = nums[:len(nums)//2]
-#     right = nums[len(nums)//2:]
-    
-#     return merge(left, right)
-    
-# def merge(left, right):
-#     if len(left) > 1 and not isSorted(left):
-#         left = merge(left[:len(left//2)], left[len(left//2):])
-#     if len(right) > 1 and not isSorted(right):
-#         right = merge(right[:len(left//2)], right[len(left//2):])
-    
-# def isSorted(nums):
-#     for i in range(len(nums)):
-#         if nums[i] > nums[i+1]:
-#             return False
-#     return True
-
+print(subsets([1, 2, 3, 4]))
